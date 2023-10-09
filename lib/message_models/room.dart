@@ -1,6 +1,3 @@
-
-
-
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:message_models/message_models/user.dart';
@@ -18,11 +15,11 @@ enum RoomType { channel, direct, group }
 @immutable
 abstract class Room extends Equatable {
   /// Creates a [Room].
-   Room._({
+  Room._({
     this.createdAt,
     required this.id,
     this.imageUrl,
-    this.lastMessage,
+    Message? lastMessage,
     this.metadata,
     this.name,
     this.description,
@@ -30,9 +27,13 @@ abstract class Room extends Equatable {
     this.owner,
     this.updatedAt,
     required this.users,
-  });
+  }) {
+    if (lastMessage != this.lastMessage) {
+      this.lastMessage = lastMessage;
+    }
+  }
 
-   factory Room({
+  factory Room({
     int? createdAt,
     String? description,
     required String id,
@@ -60,7 +61,7 @@ abstract class Room extends Equatable {
   final String? imageUrl;
 
   /// List of last messages this room has received.
-  @JsonKey(includeFromJson: false,includeToJson: true)
+  @JsonKey(includeFromJson: false, includeToJson: true)
   late final Message? lastMessage;
 
   /// Additional custom metadata or attributes related to the room.
@@ -125,7 +126,7 @@ abstract class Room extends Equatable {
 
 /// A utility class to enable better copyWith.
 class _Room extends Room {
-   _Room({
+  _Room({
     super.createdAt,
     required super.id,
     super.imageUrl,
