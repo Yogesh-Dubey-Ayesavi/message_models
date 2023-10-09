@@ -35,7 +35,7 @@ The `ImageMessage` class represents an image message. It includes properties lik
 
 ### Audio Message
 
-The `AudioMessage` class represents an audio message. It includes properties such as `author`, `createdAt`, `name`, `size`, `uri`, `duration`, and more. You can use it to handle audio messages within your chat application.
+The `AudioMessage` class represents an audio message. It includes properties such as `author`, `createdAt`, `name`, `size`, `uri`, `duration`, and more. You can use it to handle audio messages within your chat application. 
 
 ## Usage
 
