@@ -42,9 +42,12 @@ abstract class SystemMessage extends Message {
   }) = _SystemMessage;
 
   /// Creates a text message from a map (decoded JSON).
-  factory SystemMessage.fromJson(Map<String, dynamic> json,ChatUser author,
-      {Message? repliedMessage}) =>
-      _$SystemMessageFromJson(json);
+  factory SystemMessage.fromJson(Map<String, dynamic> json, ChatUser author,
+      {Message? repliedMessage}) {
+    final _instance = _$SystemMessageFromJson(json);
+    _instance.repliedMessage = null;
+    return _instance;
+  }
 
   /// ChatUser's message.
   final String text;
