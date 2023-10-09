@@ -15,6 +15,9 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
           : Reaction.fromJson(json['reaction'] as Map<String, dynamic>),
       metadata: json['metadata'] as Map<String, dynamic>?,
       remoteId: json['remoteId'] as String?,
+      repliedMessage: json['repliedMessage'] == null
+          ? null
+          : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
       status: $enumDecodeNullable(_$DeliveryStatusEnumMap, json['status']),
@@ -25,7 +28,6 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
     <String, dynamic>{
-      'author': instance.author.toJson(),
       'createdAt': instance.createdAt,
       'id': instance.id,
       'metadata': instance.metadata,

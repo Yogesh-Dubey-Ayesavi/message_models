@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+import '../../custom_converters/chat_user_converter.dart';
+import '../../repos/user_repository.dart';
 import '../enumeration.dart';
 import '../message.dart';
 import '../reaction.dart';
@@ -19,7 +21,7 @@ final Map<String, CustomMessage Function(Map<String, dynamic> json)>
 class CustomMessage extends Message {
   /// Creates a custom message.
   CustomMessage({
-    super.author,
+    required super.author,
     required super.createdAt,
     required super.id,
     required this.customType,
@@ -45,8 +47,7 @@ class CustomMessage extends Message {
   final String customType;
 
   /// Creates a custom message from a map (decoded JSON).
-  factory CustomMessage.fromJson(Map<String, dynamic> json, ChatUser author,
-      {Message? repliedMessage}) {
+  factory CustomMessage.fromJson(Map<String, dynamic> json,{IUserRepository? userRepository}) {
     final constructor = customMessageConstructors[json['customType']];
     if (constructor != null) {
       return constructor(json);

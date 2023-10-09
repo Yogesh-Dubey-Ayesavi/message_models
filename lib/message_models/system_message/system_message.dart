@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
+import '../../repos/user_repository.dart';
 import '../enumeration.dart';
 import '../message.dart';
 import '../reaction.dart';
@@ -42,12 +43,7 @@ abstract class SystemMessage extends Message {
   }) = _SystemMessage;
 
   /// Creates a text message from a map (decoded JSON).
-  factory SystemMessage.fromJson(Map<String, dynamic> json, ChatUser author,
-      {Message? repliedMessage}) {
-    final _instance = _$SystemMessageFromJson(json);
-    _instance.repliedMessage = null;
-    return _instance;
-  }
+  factory SystemMessage.fromJson(Map<String, dynamic> json,{IUserRepository? userRepository}) =>_$SystemMessageFromJson(json);
 
   /// ChatUser's message.
   final String text;

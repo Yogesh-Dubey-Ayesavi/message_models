@@ -6,7 +6,12 @@ part of 'text_message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
+TextMessage _$TextMessageFromJson(
+        Map<String, dynamic> json, IUserRepository? userRepository) =>
+    TextMessage(
+      author: const ChatUserConverter().fromJson(
+          json['author'] as Map<String, dynamic>,
+          userRepository: userRepository),
       id: json['id'] as String,
       createdAt: json['createdAt'] as int,
       reaction: json['reaction'] == null
@@ -14,6 +19,10 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
           : Reaction.fromJson(json['reaction'] as Map<String, dynamic>),
       metadata: json['metadata'] as Map<String, dynamic>?,
       remoteId: json['remoteId'] as String?,
+      repliedMessage: json['repliedMessage'] == null
+          ? null
+          : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>,
+              userRepository: userRepository),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
       status: $enumDecodeNullable(_$DeliveryStatusEnumMap, json['status']),
@@ -24,7 +33,7 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
 
 Map<String, dynamic> _$TextMessageToJson(TextMessage instance) =>
     <String, dynamic>{
-      'author': instance.author.toJson(),
+      'author': const ChatUserConverter().toJson(instance.author),
       'createdAt': instance.createdAt,
       'id': instance.id,
       'metadata': instance.metadata,

@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+import '../../custom_converters/chat_user_converter.dart';
+import '../../repos/user_repository.dart';
 import '../enumeration.dart';
 import '../message.dart';
 import '../reaction.dart';
@@ -13,7 +15,7 @@ part 'audio_message.g.dart';
 abstract class AudioMessage extends Message {
   /// Creates a uri message.
   AudioMessage._({
-     super.author,
+    required super.author,
     required super.createdAt,
     required super.id,
     required this.name,
@@ -32,7 +34,7 @@ abstract class AudioMessage extends Message {
   }) : super(type: MessageType.voice);
 
   factory AudioMessage({
-     ChatUser author,
+    required ChatUser author,
     required String id,
     required int duration,
     required String name,
@@ -50,13 +52,8 @@ abstract class AudioMessage extends Message {
     int? updatedAt,
   }) = _AudioMessage;
 
- factory AudioMessage.fromJson(Map<String, dynamic> json, ChatUser author,
-      {Message? repliedMessage}) {
-    final _instance = _$AudioMessageFromJson(json);
-    _instance.author = author;
-    _instance.repliedMessage = repliedMessage;
-    return _instance;
-  }
+  factory AudioMessage.fromJson(Map<String, dynamic> json,{IUserRepository? userRepository}) =>
+      _$AudioMessageFromJson(json,userRepository);
 
   /// ChatUser's message.
   final String uri;
@@ -108,7 +105,7 @@ abstract class AudioMessage extends Message {
 /// A utility class to enable better copyWith.
 class _AudioMessage extends AudioMessage {
   _AudioMessage({
-     super.author,
+    required super.author,
     required super.createdAt,
     required super.id,
     required super.name,

@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
+import '../../custom_converters/chat_user_converter.dart';
+import '../../repos/user_repository.dart';
 import '../enumeration.dart';
 import '../message.dart';
 import '../reaction.dart';
@@ -12,7 +14,7 @@ part 'text_message.g.dart';
 abstract class TextMessage extends Message {
   /// Creates a text message.
   TextMessage._({
-    super.author,
+    required super.author,
     required super.createdAt,
     required super.id,
     super.reaction,
@@ -28,7 +30,7 @@ abstract class TextMessage extends Message {
   }) : super(type: MessageType.text);
 
   factory TextMessage({
-    ChatUser author,
+    required ChatUser author,
     required String id,
     required int createdAt,
     Reaction? reaction,
@@ -44,14 +46,8 @@ abstract class TextMessage extends Message {
   }) = _TextMessage;
 
   /// Creates a text message from a map (decoded JSON).
-  factory TextMessage.fromJson(Map<String, dynamic> json, ChatUser author,
-      {Message? repliedMessage}) {
-    final _instance = _$TextMessageFromJson(json);
-    _instance.author = author;
-    _instance.repliedMessage = repliedMessage;
-    
-    return _instance;
-  }
+  factory TextMessage.fromJson(Map<String, dynamic> json,{IUserRepository? userRepository}) =>
+      _$TextMessageFromJson(json,userRepository);
 
   /// ChatUser's message.
   final String text;
@@ -95,7 +91,7 @@ abstract class TextMessage extends Message {
 /// A utility class to enable better copyWith.
 class _TextMessage extends TextMessage {
   _TextMessage({
-    super.author,
+    required super.author,
     required super.createdAt,
     required super.id,
     super.metadata,

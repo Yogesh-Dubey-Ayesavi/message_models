@@ -6,7 +6,12 @@ part of 'audio_message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
+AudioMessage _$AudioMessageFromJson(
+        Map<String, dynamic> json, IUserRepository? repo) =>
+    AudioMessage(
+      author: const ChatUserConverter().fromJson(
+          json['author'] as Map<String, dynamic>,
+          userRepository: repo),
       id: json['id'] as String,
       duration: json['duration'] as int,
       name: json['name'] as String,
@@ -17,6 +22,10 @@ AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
           : Reaction.fromJson(json['reaction'] as Map<String, dynamic>),
       metadata: json['metadata'] as Map<String, dynamic>?,
       remoteId: json['remoteId'] as String?,
+      repliedMessage: json['repliedMessage'] == null
+          ? null
+          : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>,
+              userRepository: repo),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
       status: $enumDecodeNullable(_$DeliveryStatusEnumMap, json['status']),
@@ -27,7 +36,7 @@ AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
 
 Map<String, dynamic> _$AudioMessageToJson(AudioMessage instance) =>
     <String, dynamic>{
-      'author': instance.author.toJson(),
+      'author': const ChatUserConverter().toJson(instance.author),
       'createdAt': instance.createdAt,
       'id': instance.id,
       'metadata': instance.metadata,

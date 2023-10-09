@@ -6,7 +6,9 @@ part of 'image_message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
+ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json,IUserRepository? userRepository) => ImageMessage(
+      author: const ChatUserConverter()
+          .fromJson(json['author'] as Map<String, dynamic>,userRepository: userRepository),
       createdAt: json['createdAt'] as int,
       reaction: json['reaction'] == null
           ? null
@@ -16,6 +18,9 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
       metadata: json['metadata'] as Map<String, dynamic>?,
       name: json['name'] as String,
       remoteId: json['remoteId'] as String?,
+      repliedMessage: json['repliedMessage'] == null
+          ? null
+          : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>,userRepository: userRepository),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
       size: json['size'] as num,
@@ -28,7 +33,7 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
 
 Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
     <String, dynamic>{
-      'author': instance.author.toJson(),
+      'author': const ChatUserConverter().toJson(instance.author),
       'createdAt': instance.createdAt,
       'id': instance.id,
       'metadata': instance.metadata,

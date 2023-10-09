@@ -5,6 +5,8 @@ import 'package:message_models/message_models/system_message/system_message.dart
 import 'package:message_models/message_models/text_message/text_message.dart';
 import 'package:message_models/message_models/user.dart';
 import 'package:meta/meta.dart';
+import '../custom_converters/chat_user_converter.dart';
+import '../repos/user_repository.dart';
 import 'audio_message/audio_message.dart';
 import 'custom_message/custom_message.dart';
 import 'enumeration.dart';
@@ -20,12 +22,12 @@ import 'shift_message/shift_message.dart';
 @immutable
 abstract class Message extends Equatable {
   Message({
-    ChatUser? author,
+    required this.author,
     required this.createdAt,
     required this.id,
     this.metadata,
     this.remoteId,
-    Message? repliedMessage,
+    this.repliedMessage,
     this.roomId,
     this.showStatus,
     DeliveryStatus? status,
@@ -33,20 +35,13 @@ abstract class Message extends Equatable {
     this.updatedAt,
     this.reaction,
   }) {
-    if (author != null) {
-      this.author = author;
-    }
-    if (repliedMessage != null) {
-      this.repliedMessage = repliedMessage;
-    }
-
     this.status = status ?? DeliveryStatus.pending;
   }
 
   /// Creates a particular message from a map (decoded JSON).
   /// Type is determined by the `type` field.
-  factory Message.fromJson(Map<String, dynamic> json, ChatUser author,
-      {Message? repliedMessage}) {
+  factory Message.fromJson(Map<String, dynamic> json,
+      {IUserRepository? userRepository}) {
     final type = MessageType.values.firstWhere(
       (e) => e.name == json['type'],
       orElse: () => MessageType.unsupported,
@@ -54,23 +49,17 @@ abstract class Message extends Equatable {
 
     switch (type) {
       case MessageType.custom:
-        return CustomMessage.fromJson(json, author,
-            repliedMessage: repliedMessage);
+        return CustomMessage.fromJson(json, userRepository: userRepository);
       case MessageType.voice:
-        return AudioMessage.fromJson(json, author,
-            repliedMessage: repliedMessage);
+        return AudioMessage.fromJson(json, userRepository: userRepository);
       case MessageType.image:
-        return ImageMessage.fromJson(json, author,
-            repliedMessage: repliedMessage);
+        return ImageMessage.fromJson(json, userRepository: userRepository);
       case MessageType.text:
-        return TextMessage.fromJson(json, author,
-            repliedMessage: repliedMessage);
+        return TextMessage.fromJson(json, userRepository: userRepository);
       case MessageType.shift:
-        return ShiftMessage.fromJson(json, author,
-            repliedMessage: repliedMessage);
+        return ShiftMessage.fromJson(json, userRepository: userRepository);
       case MessageType.system:
-        return SystemMessage.fromJson(json, author,
-            repliedMessage: repliedMessage);
+        return SystemMessage.fromJson(json, userRepository: userRepository);
       default:
         return TextMessage(
             author: ChatUser.fromJson(json['author']),
@@ -81,8 +70,8 @@ abstract class Message extends Equatable {
   }
 
   /// ChatUser who sent this message.
-  @JsonKey(includeFromJson: false, includeToJson: true)
-  late final ChatUser author;
+  @ChatUserConverter()
+  final ChatUser author;
 
   /// Created message timestamp, in ms.
   final int createdAt;
@@ -97,8 +86,8 @@ abstract class Message extends Equatable {
   final String? remoteId;
 
   /// Message that is being replied to with the current message.
-  @JsonKey(includeFromJson: false, includeToJson: true)
-  late final Message? repliedMessage;
+
+  final Message? repliedMessage;
 
   /// ID of the room where this message is sent.
   final String? roomId;

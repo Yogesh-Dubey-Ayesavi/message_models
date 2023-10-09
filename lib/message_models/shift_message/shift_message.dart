@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart' as ann;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
+import '../../custom_converters/chat_user_converter.dart';
+import '../../repos/user_repository.dart';
 import '../enumeration.dart';
 import '../message.dart';
 import '../reaction.dart';
@@ -14,7 +16,7 @@ part 'shift_message.g.dart';
 abstract class ShiftMessage extends Message {
   /// Creates a text message.
   ShiftMessage._({
-     super.author,
+    required super.author,
     required super.createdAt,
     required super.id,
     required this.shift,
@@ -31,7 +33,7 @@ abstract class ShiftMessage extends Message {
   }) : super(type: MessageType.shift);
 
   factory ShiftMessage({
-     ChatUser author,
+    required ChatUser author,
     required String id,
     required Shift shift,
     required int createdAt,
@@ -48,13 +50,8 @@ abstract class ShiftMessage extends Message {
   }) = _ShiftMessage;
 
   /// Creates a text message from a map (decoded JSON).
-  factory ShiftMessage.fromJson(Map<String, dynamic> json, ChatUser author,
-      {Message? repliedMessage}) {
-    final _instance = _$ShiftMessageFromJson(json);
-    _instance.author = author;
-    _instance.repliedMessage = repliedMessage;
-    return _instance;
-  }
+  factory ShiftMessage.fromJson(Map<String, dynamic> json,{IUserRepository? userRepository}) =>
+      _$ShiftMessageFromJson(json,userRepository);
 
   final Shift shift;
 
@@ -101,7 +98,7 @@ abstract class ShiftMessage extends Message {
 /// A utility class to enable better copyWith.
 class _ShiftMessage extends ShiftMessage {
   _ShiftMessage({
-    super.author,
+    required super.author,
     required super.createdAt,
     required super.id,
     required super.shift,

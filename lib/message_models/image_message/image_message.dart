@@ -1,11 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+import '../../custom_converters/chat_user_converter.dart';
+import '../../repos/user_repository.dart';
 import '../enumeration.dart';
 import '../message.dart';
 import '../reaction.dart';
 import '../user.dart';
-
 
 part 'image_message.g.dart';
 
@@ -15,7 +16,7 @@ part 'image_message.g.dart';
 abstract class ImageMessage extends Message {
   /// Creates an image message.
   ImageMessage._({
-    super.author,
+    required super.author,
     required super.createdAt,
     super.reaction,
     this.height,
@@ -35,7 +36,7 @@ abstract class ImageMessage extends Message {
   }) : super(type: type ?? MessageType.image);
 
   factory ImageMessage({
-     ChatUser author,
+    required ChatUser author,
     required int createdAt,
     Reaction? reaction,
     double? height,
@@ -55,14 +56,8 @@ abstract class ImageMessage extends Message {
   }) = _ImageMessage;
 
   /// Creates an image message from a map (decoded JSON).
- factory ImageMessage.fromJson(Map<String, dynamic> json, ChatUser author,
-      {Message? repliedMessage}) {
-    final _instance = _$ImageMessageFromJson(json);
-    _instance.author = author;
-    _instance.repliedMessage = repliedMessage;
-    return _instance;
-  }
-
+  factory ImageMessage.fromJson(Map<String, dynamic> json,{IUserRepository? userRepository}) =>
+      _$ImageMessageFromJson(json,userRepository);
 
   /// Image height in pixels.
   final double? height;
@@ -125,7 +120,7 @@ abstract class ImageMessage extends Message {
 /// A utility class to enable better copyWith.
 class _ImageMessage extends ImageMessage {
   _ImageMessage({
-    super.author,
+    required super.author,
     required super.createdAt,
     super.height,
     super.reaction,

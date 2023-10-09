@@ -8,11 +8,16 @@ part of 'custom_message.dart';
 
 CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
     CustomMessage(
+      author: const ChatUserConverter()
+          .fromJson(json['author'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as int,
       id: json['id'] as String,
       customType: json['customType'] as String,
       metadata: json['metadata'] as Map<String, dynamic>?,
       remoteId: json['remoteId'] as String?,
+      repliedMessage: json['repliedMessage'] == null
+          ? null
+          : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
       status: $enumDecodeNullable(_$DeliveryStatusEnumMap, json['status']),
@@ -24,7 +29,7 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
     <String, dynamic>{
-      'author': instance.author.toJson(),
+      'author': const ChatUserConverter().toJson(instance.author),
       'createdAt': instance.createdAt,
       'id': instance.id,
       'metadata': instance.metadata,
