@@ -49,6 +49,7 @@ abstract class TextMessage extends Message {
     final _instance = _$TextMessageFromJson(json);
     _instance.author = author;
     _instance.repliedMessage = repliedMessage;
+    
     return _instance;
   }
 

@@ -1,39 +1,61 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+# Message Models for Chatbook
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This Dart package, "message_models," provides a collection of message models that can be used in a chat application. These message models are designed to represent different types of messages, such as text messages, shift messages, custom messages, image messages, and audio messages. They come with built-in serialization and deserialization capabilities for easy integration with JSON-based communication protocols.
 
-## Features
+## Installation
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+To use this package in your Dart project, add it as a dependency in your `pubspec.yaml` file:
 
-## Getting started
+```yaml
+dependencies:
+  message_models: ^1.0.0
+```
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Then, run `flutter pub get` to fetch and install the package.
+
+## Message Types
+
+### Text Message
+
+The `TextMessage` class represents a text message. It inherits from the `Message` class and includes properties like `author`, `createdAt`, `text`, and more. You can use it to create and work with text messages in your chat application.
+
+### Shift Message
+
+The `ShiftMessage` class represents a shift message. It contains information about a shift, such as its `author`, `createdAt`, `shift` details, and text content. This class allows you to handle shift-related messages within your chat application.
+
+### Custom Message
+
+The `CustomMessage` class is a versatile message type that lets you define custom message formats. It includes a `customType` property for unique identification and a flexible `metadata` field for custom data storage. You can use it to handle various types of custom messages in your chat app.
+
+### Image Message
+
+The `ImageMessage` class represents an image message. It includes properties like `author`, `createdAt`, `name`, `size`, `uri`, and more. Use it to work with image messages in your chat application.
+
+### Audio Message
+
+The `AudioMessage` class represents an audio message. It includes properties such as `author`, `createdAt`, `name`, `size`, `uri`, `duration`, and more. You can use it to handle audio messages within your chat application.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+To use these message models, you can import them into your Dart code and create instances of the respective message types. For example:
 
 ```dart
-const like = 'sample';
+import 'package:message_models/text_message.dart';
+
+void main() {
+  final textMessage = TextMessage(
+    author: ChatUser(name: 'Alice'),
+    createdAt: DateTime.now().millisecondsSinceEpoch,
+    id: '123456789',
+    text: 'Hello, World!',
+  );
+
+  print('Text Message: ${textMessage.text}');
+}
 ```
 
-## Additional information
+## Contribution
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+Contributions to this package are welcome! If you have ideas for improvements, bug fixes, or new features, please open an issue or submit a pull request on the GitHub repository: [message_models](https://github.com/your/repository/link).
