@@ -28,7 +28,7 @@ abstract class Room extends Equatable {
     this.updatedAt,
     required this.users,
   }) {
-    if (lastMessage != this.lastMessage) {
+    if (lastMessage != null) {
       this.lastMessage = lastMessage;
     }
   }
