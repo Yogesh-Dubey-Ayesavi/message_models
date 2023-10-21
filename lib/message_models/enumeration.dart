@@ -14,6 +14,7 @@ enum ShiftStatus {
   ongoing,
   upcoming,
   late,
+  started,
   shiftbreak,
   review,
   pending,

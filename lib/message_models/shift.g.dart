@@ -48,6 +48,7 @@ const _$ShiftStatusEnumMap = {
   ShiftStatus.ongoing: 'ongoing',
   ShiftStatus.upcoming: 'upcoming',
   ShiftStatus.late: 'late',
+  ShiftStatus.started:'started',
   ShiftStatus.ended: 'ended',
   ShiftStatus.shiftbreak: 'shiftbreak',
   ShiftStatus.review: 'review',
