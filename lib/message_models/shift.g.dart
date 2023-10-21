@@ -50,7 +50,7 @@ const _$ShiftStatusEnumMap = {
   ShiftStatus.late: 'late',
   ShiftStatus.started:'started',
   ShiftStatus.ended: 'ended',
-  ShiftStatus.shiftbreak: 'shiftbreak',
+  ShiftStatus.brk: 'brk',
   ShiftStatus.review: 'review',
   ShiftStatus.pending: 'pending',
   ShiftStatus.completed: 'completed',
