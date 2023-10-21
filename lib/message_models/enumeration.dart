@@ -18,6 +18,7 @@ enum ShiftStatus {
   review,
   pending,
   completed,
+  ended,
   paid
 }
 
